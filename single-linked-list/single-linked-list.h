@@ -333,17 +333,20 @@ public:
     // Возвращает итератор на элемент, следующий за удалённым
     Iterator EraseAfter(ConstIterator pos) noexcept {
         assert(pos.node_ != nullptr);
-        Node *next;
+        Node *next = nullptr;
         // узел для удаления
         Node *to_erase = pos.node_->next_node;
-        // узел следующий за удаляемым
-        next = to_erase->next_node;
-        // исключаем из списка удаляемый узел
-        pos.node_->next_node = next;
-        // удаляем узел
-        delete to_erase;
-        // уменьшаем размер списка
-        --size_;
+        // если он есть
+        if(nullptr != to_erase) {
+            // узел следующий за удаляемым
+            next = to_erase->next_node;
+            // исключаем из списка удаляемый узел
+            pos.node_->next_node = next;
+            // удаляем узел
+            delete to_erase;
+            // уменьшаем размер списка
+            --size_;
+        }
         return Iterator{next};
     }
 
